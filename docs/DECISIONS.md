@@ -673,5 +673,47 @@ What would change our decision:
 
 If the course instructor explicitly forbids optimization functions from SciPy, or requires the curve-fit procedure itself to be implemented manually.
 
+## Decision 009 — Exponential Baseline Information Rule
 
+
+
+Decision:
+
+The physics-style exponential baseline is prefix-informed.
+
+
+
+For a prediction at discharge cycle t, the exponential curve may be fitted using only the observed discharge capacities of that same battery from cycles 0 through t.
+
+
+
+The fitted curve is then used to predict discharge capacity at cycle t+1.
+
+
+
+No capacity from cycle t+1 or later may be used when fitting the curve.
+
+
+
+Why:
+
+The primary task is next-cycle prediction after observing the current battery history. A per-battery exponential fit provides a simple physics-style forecasting baseline under the same information-availability rule.
+
+
+
+Alternative:
+
+Fit one exponential model using only the other training batteries and apply those parameters directly to the held-out battery.
+
+
+
+Why rejected:
+
+Battery degradation trajectories can differ substantially, and applying one fixed degradation curve to a completely unseen battery represents a different cold-start task from the prefix-informed forecasting problem defined for this project.
+
+
+
+Expected benefit:
+
+A simple baseline that uses
 
