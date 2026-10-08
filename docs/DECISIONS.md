@@ -507,3 +507,101 @@ What would change our decision:
 
 If the course, dataset documentation, or project requirements specify a different EOL convention, or if we explicitly decide to study a per-cell normalized EOL definition as a separate experiment.
 
+## Decision 007 — RUL Definition and Censoring
+
+
+
+Decision:
+
+Remaining Useful Life (RUL) is defined as the number of discharge cycles from the current discharge cycle t until the first observed discharge cycle where recorded capacity is less than or equal to the project EOL threshold of 1.4 Ah.
+
+
+
+For a battery with observed EOL cycle e:
+
+
+
+RUL(t) = e - t
+
+
+
+Exact RUL labels are created only for cycles where the battery's EOL crossing is observed in the recorded data.
+
+
+
+If a battery never reaches the EOL threshold during the observation window, its true EOL cycle is unknown.
+
+
+
+Such a battery is treated as censored for exact-RUL evaluation.
+
+
+
+Do not:
+
+\- replace its EOL with the final recorded cycle;
+
+\- assign RUL = 0 at the final recorded observation;
+
+\- extrapolate an EOL cycle and treat that extrapolation as ground truth.
+
+
+
+Why:
+
+The true failure cycle of a non-crossing battery is not present in the dataset, so assigning an exact EOL would fabricate a target.
+
+
+
+Alternative:
+
+Use the final recorded discharge cycle as EOL for batteries that never cross 1.4 Ah.
+
+
+
+Why rejected:
+
+The final recorded cycle only indicates the end of observation, not necessarily the physical end of life.
+
+
+
+Expected benefit:
+
+RUL metrics are calculated only where exact ground truth is actually observed.
+
+
+
+Experiment:
+
+For each battery, determine whether an observed 1.4 Ah crossing exists.
+
+
+
+Use exact-RUL regression metrics only for batteries/cycles whose EOL is observed under this definition.
+
+
+
+Report censored batteries separately rather than silently dropping or relabeling them.
+
+
+
+Result:
+
+
+
+Trade-off:
+
+This reduces the amount of real data available for exact-RUL evaluation and may exclude some batteries from particular RUL metrics.
+
+
+
+Failure mode:
+
+Treating the last observed cycle of a censored battery as true EOL would create false labels and misleading RUL errors.
+
+
+
+What would change our decision:
+
+If the project later introduces an approved method specifically designed for censored time-to-event data, or if additional observations reveal the true EOL crossing for currently censored batteries.
+
