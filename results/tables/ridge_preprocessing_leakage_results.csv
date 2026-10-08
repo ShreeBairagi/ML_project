@@ -1,0 +1,3 @@
+experiment,condition,split_type,battery_id,seed,alpha,feature_set,MAE,RMSE,R2,n_test_rows
+B_Preprocessing_Leakage,CORRECT_SCALER,random,all_mixed,42,1.0,"['discharge_cycle_index', 'capacity']",0.01182631930314964,0.021681123129649784,0.9884862525212421,127
+B_Preprocessing_Leakage,WRONG_GLOBAL_SCALER,random,all_mixed,42,1.0,"['discharge_cycle_index', 'capacity']",0.011829596670910783,0.021681424220493874,0.988485932730796,127

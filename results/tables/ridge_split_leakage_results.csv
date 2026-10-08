@@ -1,0 +1,10 @@
+experiment,condition,split_type,battery_id,seed,alpha,feature_set,MAE,RMSE,R2,n_test_rows
+A_Split_Leakage,WRONG_RANDOM_CYCLE_SPLIT,random,all_mixed,0,1.0,"['discharge_cycle_index', 'capacity']",0.008693308002504854,0.015472270143243962,0.9936087709311782,127
+A_Split_Leakage,WRONG_RANDOM_CYCLE_SPLIT,random,all_mixed,1,1.0,"['discharge_cycle_index', 'capacity']",0.011816908878525536,0.023653249301282302,0.9855676781612593,127
+A_Split_Leakage,WRONG_RANDOM_CYCLE_SPLIT,random,all_mixed,2,1.0,"['discharge_cycle_index', 'capacity']",0.008224601036430112,0.014412358529337239,0.9946287985725364,127
+A_Split_Leakage,WRONG_RANDOM_CYCLE_SPLIT,random,all_mixed,3,1.0,"['discharge_cycle_index', 'capacity']",0.009560357111759864,0.0175291174236415,0.9927400496112274,127
+A_Split_Leakage,WRONG_RANDOM_CYCLE_SPLIT,random,all_mixed,4,1.0,"['discharge_cycle_index', 'capacity']",0.008211886599069544,0.012762834592086023,0.9955286193935068,127
+A_Split_Leakage,CORRECT_LOBO,LOBO,B0005,N/A,1.0,"['discharge_cycle_index', 'capacity']",0.006579477399316693,0.012777683116980802,0.9954357378579561,167
+A_Split_Leakage,CORRECT_LOBO,LOBO,B0006,N/A,1.0,"['discharge_cycle_index', 'capacity']",0.013006920907513956,0.022932336256455677,0.9915295827670237,167
+A_Split_Leakage,CORRECT_LOBO,LOBO,B0007,N/A,1.0,"['discharge_cycle_index', 'capacity']",0.010174033240448632,0.01533570770636462,0.990791040242716,167
+A_Split_Leakage,CORRECT_LOBO,LOBO,B0018,N/A,1.0,"['discharge_cycle_index', 'capacity']",0.014468954627248147,0.022310973541138514,0.9786446527107926,131
