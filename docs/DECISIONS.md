@@ -605,3 +605,73 @@ What would change our decision:
 
 If the project later introduces an approved method specifically designed for censored time-to-event data, or if additional observations reveal the true EOL crossing for currently censored batteries.
 
+## Decision 008 — Use of scipy.optimize for the Exponential Baseline
+
+
+
+Decision:
+
+Allow `scipy.optimize` only for fitting the project’s physics-style exponential capacity-fade baseline.
+
+
+
+SciPy remains restricted to file loading and this specific curve-fitting baseline.
+
+
+
+Do not use SciPy optimization for general model training, hyperparameter search, or methods outside the syllabus.
+
+
+
+Why:
+
+The project brief requires an exponential-fit baseline, but manually implementing nonlinear optimization would add complexity unrelated to the main ML learning goals.
+
+
+
+Alternative:
+
+Implement nonlinear exponential fitting manually using NumPy.
+
+
+
+Why rejected:
+
+That would increase code complexity and debugging risk without materially improving the scientific comparison.
+
+
+
+Expected benefit:
+
+A simple, reproducible exponential baseline that can be explained and compared fairly with ML models.
+
+
+
+Experiment:
+
+Fit the approved exponential form using training information only and evaluate it under the same split protocol as other baselines.
+
+
+
+Result:
+
+
+
+Trade-off:
+
+This is a narrow exception to the brief's original wording that limited SciPy primarily to file loading.
+
+
+
+Failure mode:
+
+Using `scipy.optimize` outside this specific baseline would violate the intended syllabus restriction and complexity budget.
+
+
+
+What would change our decision:
+
+If the course instructor explicitly forbids optimization functions from SciPy, or requires the curve-fit procedure itself to be implemented manually.
+
+
+
