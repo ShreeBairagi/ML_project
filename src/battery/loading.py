@@ -2,6 +2,27 @@ import numpy as np
 import pandas as pd
 import scipy.io
 
+def _extract_string(val) -> str:
+    if isinstance(val, str):
+        return val
+    if isinstance(val, np.ndarray) and val.size > 0:
+        return str(val.flat[0])
+    raise ValueError(f"Cannot extract string from malformed structure: {val}")
+
+def _extract_scalar(val) -> float:
+    if isinstance(val, (int, float)):
+        return float(val)
+    if isinstance(val, np.ndarray) and val.size == 1:
+        return float(val.item())
+    raise ValueError(f"Cannot extract scalar from malformed structure of shape {getattr(val, 'shape', None)}")
+
+def _extract_time(val) -> str:
+    if isinstance(val, np.ndarray):
+        flat_val = val.flatten()
+        if flat_val.size == 6:
+            return f"{int(flat_val[0])}-{int(flat_val[1]):02d}-{int(flat_val[2]):02d} {int(flat_val[3]):02d}:{int(flat_val[4]):02d}:{int(flat_val[5]):02d}"
+    raise ValueError(f"Malformed time array: {val}")
+
 def load_battery_data(file_path: str, battery_id: str) -> list[dict]:
     """
     Loads battery data from a NASA .mat file into a list of operation dictionaries.
@@ -15,18 +36,9 @@ def load_battery_data(file_path: str, battery_id: str) -> list[dict]:
     discharge_cycle_index = 0
     
     for op_idx, op in enumerate(cycles):
-        op_type = str(op['type'][0])
-        
-        try:
-            ambient_temp = float(op['ambient_temperature'][0, 0])
-        except (IndexError, ValueError, TypeError):
-            ambient_temp = float(op['ambient_temperature'][0]) if len(op['ambient_temperature']) > 0 else np.nan
-            
-        time_array = op['time'][0]
-        try:
-            timestamp = f"{int(time_array[0])}-{int(time_array[1]):02d}-{int(time_array[2]):02d} {int(time_array[3]):02d}:{int(time_array[4]):02d}:{int(time_array[5]):02d}"
-        except Exception:
-            timestamp = str(time_array)
+        op_type = _extract_string(op['type'])
+        ambient_temp = _extract_scalar(op['ambient_temperature'])
+        timestamp = _extract_time(op['time'])
             
         data_struct = op['data'][0, 0]
         data_fields = data_struct.dtype.names
@@ -44,13 +56,13 @@ def load_battery_data(file_path: str, battery_id: str) -> list[dict]:
         if op_type == 'discharge':
             op_dict['discharge_cycle_index'] = discharge_cycle_index
             if 'Capacity' in data_fields:
-                op_dict['capacity'] = float(data_struct['Capacity'][0, 0])
+                op_dict['capacity'] = _extract_scalar(data_struct['Capacity'])
             discharge_cycle_index += 1
             
         # Dynamically retain all actual confirmed nested data fields for each operation
         for field in data_fields:
             if field != 'Capacity':
-                op_dict[field] = data_struct[field].flatten()
+                op_dict[field] = data_struct[field]
                 
         operations.append(op_dict)
         
