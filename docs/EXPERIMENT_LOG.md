@@ -125,3 +125,25 @@ Observed numbers:
 - **Accuracy vs. Cost**: At capacity threshold 1.45, regress-then-threshold still had ~85-90% accuracy but an undesirable cost trade-off due to excessive early warnings (FPs).
 
 Conclusion:
+
+## Experiment — Error Analysis and Distribution Shift
+
+Experiment:
+Analyze where next-cycle capacity prediction errors are largest and test how model performance changes under a controlled synthetic distribution shift.
+
+Question:
+Are prediction errors concentrated in particular parts of battery life, and how sensitive is the model to a simple controlled shift in the input distribution?
+
+Prediction:
+I expect errors to vary across the battery trajectory rather than being perfectly uniform.
+
+I also expect performance to degrade under an intentionally shifted synthetic distribution, although I do not know how large the degradation will be.
+
+Configuration:
+Pending implementation.
+
+Result file:
+
+Observed numbers:
+
+Conclusion:
