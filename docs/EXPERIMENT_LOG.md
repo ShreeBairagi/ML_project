@@ -93,3 +93,35 @@ Result file:
 Observed numbers:
 
 Conclusion:
+
+## Experiment — Classification, Unequal Costs, and Calibration
+
+Experiment:
+Compare a direct binary classifier with a regress-then-threshold approach for predicting whether the next cycle is below the operational EOL threshold.
+
+Question:
+How do direct classification and regress-then-threshold behave when false negatives and false positives have unequal costs?
+
+Prediction:
+I expect the preferred decision threshold to depend on the relative cost assigned to false negatives and false positives.
+
+I also expect that a model with strong overall accuracy may still be poorly calibrated or produce an undesirable error tradeoff under unequal costs.
+
+I do not know which approach will perform better before running the experiment.
+
+Configuration:
+- **Task**: Predict `capacity <= 1.4 Ah` for the next cycle.
+- **Models**: `RandomForestClassifier` (direct) vs `RandomForestRegressor` (regress-then-threshold).
+- **Evaluation Split**: Leave-One-Battery-Out (LOBO).
+- **Cost Setup**: High penalty for False Negatives (FN cost = 5, late failure prediction) and low penalty for False Positives (FP cost = 1, early failure prediction).
+- **Thresholds**: Classification varied decision probability (0.1 to 0.9); Regression varied capacity threshold (1.30 to 1.50).
+
+Result file:
+`results/tables/classification_costs_results.csv`
+
+Observed numbers:
+- **Direct Classification Costs**: Best cost was at probability threshold 0.50 (average cost 10.00 across batteries). Lowering threshold to 0.30 eliminated some FNs but introduced many FPs on non-degraded cycles, increasing average cost to 16.50.
+- **Regress-then-Threshold Costs**: Best cost was at capacity threshold 1.40 (average cost 8.50). Raising the threshold to 1.45 to be "safe" avoided all FNs but drastically increased FPs (e.g., 24 FPs for battery B0007, which never truly reached EOL), bringing average cost up to 19.25.
+- **Accuracy vs. Cost**: At capacity threshold 1.45, regress-then-threshold still had ~85-90% accuracy but an undesirable cost trade-off due to excessive early warnings (FPs).
+
+Conclusion:
