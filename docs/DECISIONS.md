@@ -345,3 +345,89 @@ What would change our decision:
 
 If the intended deployment scenario changes to predicting future cycles only for a battery that has already been partially observed, then time-ordered prefix-informed evaluation may become the primary evaluation instead.
 
+## Decision 005 — Held-Out Battery Information: Prefix-Informed Evaluation
+
+
+
+Decision:
+
+For the primary next-cycle prediction task, held-out-battery evaluation is prefix-informed.
+
+
+
+When battery B is held out as the outer test battery, the model may use information from that battery only up to the current prediction cycle t when constructing the test example.
+
+
+
+It may not use any information from cycle t+1 or later.
+
+
+
+The held-out battery must still remain excluded from:
+
+
+
+\- model fitting
+
+\- preprocessing fitting
+
+\- feature selection
+
+\- hyperparameter selection
+
+\- ensemble-weight selection
+
+\- threshold selection
+
+
+
+Why:
+
+The project predicts the next discharge-cycle capacity after observing the current cycle. Therefore, information from the held-out battery's past and current cycles is genuinely available at prediction time.
+
+
+
+Alternative:
+
+Cold-start evaluation where no measurements from the held-out battery are allowed at all.
+
+
+
+Why rejected:
+
+Cold-start evaluation represents a different problem: predicting an unseen battery without observing any of its own history. That is not the primary next-cycle forecasting scenario defined in Decision 001 and Decision 002.
+
+
+
+Expected benefit:
+
+The evaluation matches the actual prediction moment while still testing whether learned relationships generalize across batteries.
+
+
+
+Experiment:
+
+For each LOBO fold, train only on the other batteries. Construct each held-out-battery test example using information available through cycle t and predict capacity at cycle t+1.
+
+
+
+Result:
+
+
+
+Trade-off:
+
+This evaluation measures forecasting for an unseen battery after some of its history has been observed. It does not measure zero-history prediction for a completely new battery.
+
+
+
+Failure mode:
+
+Leakage occurs if later cycles from the held-out battery are used to construct earlier test examples, preprocessing statistics, features, thresholds, or model-selection decisions.
+
+
+
+What would change our decision:
+
+If the intended deployment scenario becomes prediction for a completely unseen battery before any of its measurements are available, cold-start evaluation should be used instead.
+
