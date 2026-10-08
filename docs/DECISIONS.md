@@ -431,3 +431,79 @@ What would change our decision:
 
 If the intended deployment scenario becomes prediction for a completely unseen battery before any of its measurements are available, cold-start evaluation should be used instead.
 
+## Decision 006 — End-of-Life Threshold
+
+
+
+Decision:
+
+Use 1.4 Ah recorded discharge capacity as the project’s operational end-of-life threshold.
+
+
+
+A battery is considered to have reached EOL at the first observed discharge cycle where recorded capacity is less than or equal to 1.4 Ah.
+
+
+
+The threshold is treated as an externally defined experimental criterion based on approximately 30% capacity fade from a 2.0 Ah rated capacity.
+
+
+
+It is not derived from each battery's observed maximum capacity.
+
+
+
+Why:
+
+Using one fixed threshold makes RUL and failure-label definitions consistent across cells and matches the project brief's stated EOL convention.
+
+
+
+Alternative:
+
+Define EOL as 70% of each battery's first observed capacity or maximum observed capacity.
+
+
+
+Why rejected:
+
+That would create a different threshold for every battery and would mix the SOH normalization decision with the EOL criterion.
+
+
+
+It could also change whether particular cells are considered to have reached EOL.
+
+
+
+Expected benefit:
+
+A simple, consistent threshold that can be clearly applied to every battery and defended in experiments.
+
+
+
+Experiment:
+
+Use the recorded discharge-capacity sequence to identify the first observed cycle at which capacity is less than or equal to 1.4 Ah.
+
+
+
+Result:
+
+
+
+Trade-off:
+
+The rated 2.0 Ah reference differs from the observed starting and maximum capacities in the dataset, so this threshold should not be interpreted as exactly 70% of each cell's observed initial capacity.
+
+
+
+Failure mode:
+
+A battery may never cross 1.4 Ah within the recorded observation window. In that case, the true EOL cycle is not observed and must not be fabricated.
+
+
+
+What would change our decision:
+
+If the course, dataset documentation, or project requirements specify a different EOL convention, or if we explicitly decide to study a per-cell normalized EOL definition as a separate experiment.
+
