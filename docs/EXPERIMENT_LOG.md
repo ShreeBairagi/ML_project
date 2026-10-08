@@ -71,3 +71,25 @@ Result file:
 Observed numbers:
 
 Conclusion:
+
+## Experiment — Ensemble Models and Error Correlation
+
+Experiment:
+Compare individual regressors with simple ensemble methods under leave-one-battery-out evaluation and inspect how correlated their prediction errors are.
+
+Question:
+Can combining models with different error patterns improve next-cycle capacity prediction compared with the individual models?
+
+Prediction:
+I expect models with less-correlated residual errors to be more useful in an ensemble than models making nearly identical errors.
+
+I expect simple averaging or weighted averaging to sometimes improve robustness, but I do not know whether an ensemble will outperform every individual model on every held-out battery.
+
+Configuration:
+Pending implementation.
+
+Result file:
+
+Observed numbers:
+
+Conclusion:
