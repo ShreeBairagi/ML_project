@@ -85,3 +85,79 @@ What would change our decision:
 
 If the available measurements cannot support a meaningful next-cycle prediction setup, or if the project requirements explicitly prioritize direct RUL prediction as the main task.
 
+## Decision 002 — Prediction Moment and Available Information
+
+
+
+Decision:
+
+The prediction is made at the end of discharge cycle t.
+
+
+
+At that point, all measurements recorded during discharge cycle t are considered available.
+
+
+
+The model predicts the recorded discharge capacity of discharge cycle t+1.
+
+
+
+Allowed information may include only data available up to and including cycle t.
+
+
+
+Why:
+
+This creates a clear prediction-time boundary and makes leakage checks explicit.
+
+
+
+Alternative:
+
+Predict during cycle t before the full discharge curve is available, or predict current-cycle capacity.
+
+
+
+Why rejected:
+
+Predicting during the cycle would require a different partial-curve problem definition.
+
+
+
+Predicting current-cycle capacity could become trivial if measurements from the same completed discharge cycle directly reveal that capacity.
+
+
+
+Expected benefit:
+
+Clear rules for feature construction and leakage auditing.
+
+
+
+Experiment:
+
+All future supervised experiments must construct features from cycles at or before t and targets from cycle t+1.
+
+
+
+Result:
+
+
+
+Trade-off:
+
+The model assumes a complete current discharge cycle has already been observed before predicting the next one.
+
+
+
+Failure mode:
+
+Any feature using measurements from cycle t+1 or later creates future-information leakage.
+
+
+
+What would change our decision:
+
+If the project later changes to early-warning prediction before a discharge cycle is complete.
+
