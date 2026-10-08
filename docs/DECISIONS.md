@@ -161,3 +161,101 @@ What would change our decision:
 
 If the project later changes to early-warning prediction before a discharge cycle is complete.
 
+## Decision 003 — Allowed Information at Prediction Time
+
+
+
+Decision:
+
+For a prediction made at the end of discharge cycle t, the model may use only information that is available by that moment.
+
+
+
+Allowed information may include:
+
+
+
+\- battery identifier only where the experiment design explicitly permits it
+
+\- discharge cycle index t
+
+\- measurements from discharge cycle t
+
+\- measurements from earlier cycles
+
+\- recorded discharge capacity at cycle t
+
+\- previously observed impedance measurements whose timestamps occur at or before cycle t
+
+
+
+The model must not use:
+
+
+
+\- any measurement from discharge cycle t+1 or later
+
+\- capacity from cycle t+1 or later
+
+\- future impedance measurements
+
+\- future threshold-crossing information
+
+\- final battery lifetime
+
+\- values computed using the full battery trajectory
+
+\- statistics fitted using held-out/test data
+
+
+
+Why:
+
+The project predicts next-cycle capacity, so every input must represent information that would actually exist when the prediction is made.
+
+
+
+Alternative:
+
+Allow information from the full battery trajectory during feature construction.
+
+
+
+Why rejected:
+
+That would give the model access to future information and create data leakage.
+
+
+
+Expected benefit:
+
+A clear feature-availability rule that can be tested and defended during evaluation and viva.
+
+
+
+Experiment:
+
+Before using any feature group, record when the feature becomes available and verify that it uses data only from cycles at or before t.
+
+
+
+Result:
+
+
+
+Trade-off:
+
+Some potentially useful whole-life statistics cannot be used because they would not exist at prediction time.
+
+
+
+Failure mode:
+
+A feature may appear harmless but still leak future information if it is calculated using later cycles, future capacity values, or global statistics from the complete battery trajectory.
+
+
+
+What would change our decision:
+
+If the project task changes from forecasting to retrospective analysis.
+
