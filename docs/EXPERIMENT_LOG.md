@@ -47,3 +47,27 @@ Result file:
 Observed numbers:
 
 Conclusion:
+
+## Experiment — Single Models under Leave-One-Battery-Out
+
+Experiment:
+Compare several syllabus-approved regression models for next-cycle discharge-capacity prediction under leave-one-battery-out evaluation.
+
+Question:
+How differently do linear, regularized linear, instance-based, tree-based, and kernel-based models behave when generalizing to a held-out battery?
+
+Prediction:
+I expect the models to show different error patterns across held-out batteries.
+
+I expect scale-sensitive models such as KNN and SVR to require scaling, while tree-based models should not depend strongly on feature scale.
+
+I do not know which model will have the lowest error, and I will not choose a winner before seeing the results.
+
+Configuration:
+Pending implementation.
+
+Result file:
+
+Observed numbers:
+
+Conclusion:
