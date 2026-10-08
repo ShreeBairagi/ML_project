@@ -75,3 +75,11 @@ py -3.11 -m venv .venv
 - [ ] **Phase 4: Deep Spines & Experiments (H1 to H6)**
 - [ ] **Phase 5: Simulator Lab & From-Scratch Piece**
 - [ ] **Phase 6: Streamlit UI & Viva Preparation**
+
+### Run the Streamlit app
+
+Command:
+
+`.venv\Scripts\streamlit.exe run app\app.py`
+
+*Note: Experiment result artifacts must already exist under `results/` for the app to function properly.*
