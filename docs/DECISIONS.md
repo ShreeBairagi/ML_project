@@ -259,3 +259,89 @@ What would change our decision:
 
 If the project task changes from forecasting to retrospective analysis.
 
+## Decision 004 — Primary Evaluation Split
+
+
+
+Decision:
+
+The primary reported evaluation split is leave-one-battery-out (LOBO).
+
+
+
+For each outer evaluation fold:
+
+
+
+\- one battery is held out completely for final testing
+
+\- the remaining batteries are used for training
+
+\- the held-out battery is not used for fitting preprocessing, selecting features, choosing hyperparameters, or setting decision thresholds
+
+
+
+Random-by-cycle splitting is used only as a deliberately wrong leakage demonstration.
+
+
+
+Time-ordered within-battery evaluation is kept as a secondary experiment for studying temporal generalization.
+
+
+
+Why:
+
+The project should estimate how well a model generalizes to an unseen battery rather than merely to unseen cycles from batteries it has already observed.
+
+
+
+Alternative:
+
+Use random train/test splitting across all discharge cycles as the main evaluation.
+
+
+
+Why rejected:
+
+Neighboring cycles from the same battery are highly related. Random cycle splitting can place very similar observations from one battery in both training and test sets and produce overly optimistic performance.
+
+
+
+Expected benefit:
+
+A more realistic and defensible estimate of cross-battery generalization.
+
+
+
+Experiment:
+
+Compare the same model under:
+
+\- random-by-cycle split, clearly labeled WRONG
+
+\- leave-one-battery-out
+
+\- time-ordered within-battery evaluation
+
+
+
+Result:
+
+
+
+Trade-off:
+
+With only four real batteries, each LOBO fold trains on only three batteries, so estimates may be unstable and cannot support broad population-level claims.
+
+
+
+Failure mode:
+
+Leakage occurs if any information from the held-out battery is used during training, preprocessing, hyperparameter selection, feature selection, or threshold selection.
+
+
+
+What would change our decision:
+
+If the intended deployment scenario changes to predicting future cycles only for a battery that has already been partially observed, then time-ordered prefix-informed evaluation may become the primary evaluation instead.
+
