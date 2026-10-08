@@ -1,7 +1,26 @@
+# Environments
 .venv/
+env/
+venv/
+
+# Raw Dataset (Protected - Raw data is never committed)
 data/raw/
+*.mat
+
+# Python build & cache
 __pycache__/
 *.py[cod]
+*$py.class
 .pytest_cache/
+.coverage
+htmlcov/
+
+# Notebooks & IDEs
 .ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Environment Variables & OS artifacts
 .env
+.DS_Store
+Thumbs.db
