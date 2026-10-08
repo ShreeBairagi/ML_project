@@ -23,6 +23,18 @@ I expect the last-observed-value baseline to be competitive for next-cycle predi
 
 I do not know whether the exponential baseline will outperform it.
 
+Configuration:
+- Models: Exponential, Last-Observed-Value
+- Evaluation Splits: Random-by-cycle, LOBO, Time-ordered within battery
+
+Result file:
+`results/tables/baseline_results.csv`
+
+Observed numbers:
+- LOBO Exponential MAE range: 0.0194 to 0.0272
+- LOBO Last-Observed-Value MAE range: 0.0069 to 0.0144
+
+Conclusion: [HUMAN TO COMPLETE]
 
 ## Experiment — Ridge Leakage Demonstration
 
@@ -40,13 +52,18 @@ I also expect fitting the scaler using all data before splitting to produce more
 I do not know how large either difference will be.
 
 Configuration:
-Pending experiment implementation.
+- Model: Ridge Regression
+- Setup: Global scaler vs training-only scaler, Random split vs LOBO
 
 Result file:
+`results/tables/ridge_split_leakage_results.csv` and `results/tables/ridge_preprocessing_leakage_results.csv`
 
 Observed numbers:
+- Random cycle split MAE (avg): ~0.0093
+- LOBO split MAE (avg): ~0.0111
+- Preprocessing scaler leakage (seed 42): 0.011826 (Correct) vs 0.011830 (Global)
 
-Conclusion:
+Conclusion: [HUMAN TO COMPLETE]
 
 ## Experiment — Single Models under Leave-One-Battery-Out
 
@@ -64,13 +81,18 @@ I expect scale-sensitive models such as KNN and SVR to require scaling, while tr
 I do not know which model will have the lowest error, and I will not choose a winner before seeing the results.
 
 Configuration:
-Pending implementation.
+- Models: LinearRegression, Ridge, Lasso, ElasticNet, KNeighborsRegressor, DecisionTreeRegressor, SVR
+- Evaluation Split: LOBO
 
 Result file:
+`results/tables/single_model_lobo_results.csv`
 
 Observed numbers:
+- Linear models MAE range: ~0.0066 to ~0.0145
+- SVR MAE range: ~0.0082 to ~0.0944
+- Decision Tree MAE range: ~0.0145 to ~0.0185
 
-Conclusion:
+Conclusion: [HUMAN TO COMPLETE]
 
 ## Experiment — Ensemble Models and Error Correlation
 
@@ -86,13 +108,18 @@ I expect models with less-correlated residual errors to be more useful in an ens
 I expect simple averaging or weighted averaging to sometimes improve robustness, but I do not know whether an ensemble will outperform every individual model on every held-out battery.
 
 Configuration:
-Pending implementation.
+- Ensembles: VotingRegressor, BaggingRegressor, RandomForestRegressor, SimpleAveraging, WeightedAveraging
+- Evaluation Split: LOBO
 
 Result file:
+`results/tables/ensemble_lobo_results.csv` and `results/tables/residual_corr_*.csv`
 
 Observed numbers:
+- Simple Averaging MAE range: ~0.0064 to ~0.0254
+- Random Forest MAE range: ~0.0069 to ~0.0148
+- Weighted Averaging MAE range: ~0.0053 to ~0.0248
 
-Conclusion:
+Conclusion: [HUMAN TO COMPLETE]
 
 ## Experiment — Classification, Unequal Costs, and Calibration
 
@@ -117,14 +144,14 @@ Configuration:
 - **Thresholds**: Classification varied decision probability (0.1 to 0.9); Regression varied capacity threshold (1.30 to 1.50).
 
 Result file:
-`results/tables/classification_costs_results.csv`
+`results/tables/classification_costs_results.csv` (Note: saved as `classification_lobo_results.csv`)
 
 Observed numbers:
 - **Direct Classification Costs**: Best cost was at probability threshold 0.50 (average cost 10.00 across batteries). Lowering threshold to 0.30 eliminated some FNs but introduced many FPs on non-degraded cycles, increasing average cost to 16.50.
 - **Regress-then-Threshold Costs**: Best cost was at capacity threshold 1.40 (average cost 8.50). Raising the threshold to 1.45 to be "safe" avoided all FNs but drastically increased FPs (e.g., 24 FPs for battery B0007, which never truly reached EOL), bringing average cost up to 19.25.
 - **Accuracy vs. Cost**: At capacity threshold 1.45, regress-then-threshold still had ~85-90% accuracy but an undesirable cost trade-off due to excessive early warnings (FPs).
 
-Conclusion:
+Conclusion: [HUMAN TO COMPLETE]
 
 ## Experiment — Error Analysis and Distribution Shift
 
@@ -140,10 +167,14 @@ I expect errors to vary across the battery trajectory rather than being perfectl
 I also expect performance to degrade under an intentionally shifted synthetic distribution, although I do not know how large the degradation will be.
 
 Configuration:
-Pending implementation.
+- Error Analysis: Evaluated early, middle, and late life regions.
+- Distribution Shift: Tested on a synthetically shifted population.
 
 Result file:
+`results/tables/error_by_life_region.csv` and `results/tables/synthetic_shift_results.csv`
 
 Observed numbers:
+- Shifted population MAE: 0.0223 (vs 0.0116 In-distribution)
+- Shifted population RMSE: 0.0262 (vs 0.0145 In-distribution)
 
-Conclusion:
+Conclusion: [HUMAN TO COMPLETE]

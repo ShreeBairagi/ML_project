@@ -26,7 +26,8 @@ This project focuses on **deep methodological understanding** and rigorous ML pr
 │   ├── PROJECT_BRIEF.md     # Source of truth for syllabus, goals, and constraints
 │   ├── DECISIONS.md         # Human-owned definitions, SOH/EOL formulas, and conventions
 │   ├── EXPERIMENT_LOG.md    # Hypotheses, pre-run predictions, and measured results
-│   └── PROMPTS.md           # Task prompt templates for coding agents
+│   ├── PROMPTS.md           # Task prompt templates for coding agents
+│   └── RESULTS_SUMMARY.md   # Final factual numerical results summary
 ├── experiments/             # Standalone reproducible experiment scripts
 ├── app/                     # Streamlit dashboard application
 ├── notebooks/               # Exploratory notebooks (non-production)
@@ -63,23 +64,43 @@ py -3.11 -m venv .venv
 
 ### 3. Run Verification Tests
 ```powershell
-.venv\Scripts\pytest
+.venv\Scripts\python.exe -m pytest -v
 ```
+
+### 4. Reproducibility Commands (Experiments & App)
+
+Run the major experiments using these commands:
+- **Baselines**: `.venv\Scripts\python.exe experiments\run_baselines.py`
+- **Ridge Leakage**: `.venv\Scripts\python.exe experiments\run_ridge_leakage.py`
+- **Phase 4 Single Models**: `.venv\Scripts\python.exe experiments\run_phase4_single_models.py`
+- **Simulator Demo**: `.venv\Scripts\python.exe experiments\run_simulator_demo.py`
+- **Phase 6 Ensembles**: `.venv\Scripts\python.exe experiments\run_phase6_ensembles.py`
+- **Phase 7 Classification**: `.venv\Scripts\python.exe experiments\run_phase7_classification.py`
+- **Phase 8 Error Analysis**: `.venv\Scripts\python.exe experiments\run_phase8_error_analysis.py`
+
+*Note: Verify the exact script names under `experiments/` before running.*
+
+**Run the Streamlit app:**
+```powershell
+.venv\Scripts\streamlit.exe run app\app.py
+```
+*Note: Experiment result artifacts must already exist under `results/` for the app to function properly.*
 
 ---
 
 ## 📊 Phase Status
 - [x] **Phase 1: Environment & Repository Skeleton** (Python 3.11, pinned syllabus dependencies, skeleton, templates, smoke tests)
-- [ ] **Phase 2: Data Ingestion & NASA .mat Exploration**
-- [ ] **Phase 3: Baseline Models & Split Infrastructure (LOBO)**
-- [ ] **Phase 4: Deep Spines & Experiments (H1 to H6)**
-- [ ] **Phase 5: Simulator Lab & From-Scratch Piece**
-- [ ] **Phase 6: Streamlit UI & Viva Preparation**
+- [x] **Phase 2: Data Ingestion & NASA .mat Exploration**
+- [x] **Phase 3: Baseline Models & Split Infrastructure (LOBO)**
+- [x] **Phase 4: Deep Spines & Experiments (H1 to H6)**
+- [x] **Phase 5: Simulator Lab & From-Scratch Piece**
+- [x] **Phase 6: Streamlit UI & Viva Preparation**
+- [x] **Phase 7: Classification**
+- [x] **Phase 8: Error Analysis**
+- [x] **Phase 9: Result generation**
+- [x] **Phase 10: Final Audit and Cleanup**
 
-### Run the Streamlit app
-
-Command:
-
-`.venv\Scripts\streamlit.exe run app\app.py`
-
-*Note: Experiment result artifacts must already exist under `results/` for the app to function properly.*
+## Important Limitations
+- The dataset contains only four real batteries, limiting population-level generalization.
+- B0007 does not reach the operational EOL threshold (1.4 Ah) in the given observation window.
+- Random-cycle splitting is included purely as a pedagogical demonstration of data leakage, not a recommended evaluation metric.
